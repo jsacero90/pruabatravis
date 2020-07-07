@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+     - "12"
+# usa docker
+sudo: required
+services:
+    - docker
+#intalación de dependecncias
+before_script:
+   - npm install
+#inicialización de pruebas
+script:
+   - npm test
+   - docker build -t back.
+# Logueo en docker
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - docker tag back $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
+  - docker tag back $DOCKER_USER/back:latest
+  - docker push $DOCKER_USER/back:latest
