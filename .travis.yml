@@ -1,20 +1,21 @@
 language: node_js
 node_js:
-     - "12"
-# usa docker
+  - "12"
 sudo: required
+# usa docker
 services:
-    - docker
+  - docker
 #intalación de dependecncias
 before_script:
-   - npm install
+  - npm install
 #inicialización de pruebas
 script:
-   - npm test
-   - docker build -t back.
+  - npm test
+  - docker build -t back .
 # Logueo en docker
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
   - docker tag back $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
+  - docker push $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
   - docker tag back $DOCKER_USER/back:latest
   - docker push $DOCKER_USER/back:latest
